@@ -566,22 +566,6 @@ chmod -R 755 media/
 
 ---
 
-## 📸 Screenshots
-
-### Tela Inicial
-
-![Home](docs/screenshots/home.png)
-
-### Detalhes do Evento
-
-![Evento](docs/screenshots/evento.png)
-
-### Certificado
-
-![Certificado](docs/screenshots/certificado.png)
-
----
-
 **Desenvolvido com ❤️ usando Django**
 
 ---
