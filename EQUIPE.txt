@@ -1,0 +1,54 @@
+================================================================================
+                        EQUIPE DE DESENVOLVIMENTO
+                  Sistema de Gestão de Eventos Acadêmicos
+================================================================================
+
+AUTORES:
+
+    Ana Júlia Moura
+    RA: 22403137
+    
+    Vinicius Martin
+    RA: 22402759
+
+--------------------------------------------------------------------------------
+
+INSTITUIÇÃO:    Centro Universitário de Brasília (UniCEUB)
+CURSO:          Ciência da Computação
+DISCIPLINA:     Programação para Web
+PROFESSOR(A):   Felippe Pires Ferreira
+PERÍODO:        2025
+VERSÃO:         1.0.0
+
+================================================================================
+
+CREDENCIAIS PADRÃO DO SISTEMA:
+
+    Username: admin
+    Password: 12345
+    Perfil:   ORGANIZADOR
+
+================================================================================
+
+ACESSO AO SISTEMA:
+
+    Sistema Principal:  http://127.0.0.1:8000
+    Django Admin:       http://127.0.0.1:8000/admin
+    Login:              http://127.0.0.1:8000/users/login
+    Cadastro:           http://127.0.0.1:8000/users/register
+
+================================================================================
+
+CONTATO:
+
+    Email: ana.fmoura@gmail.com
+    GitHub: https://github.com/anajuliamouraa/Sistema-de-Gestao-de-Eventos-Academicos-SGEA-
+
+================================================================================
+
+© 2025 - Ana Júlia Moura & Vinicius Martin
+Centro Universitário de Brasília (UniCEUB)
+Todos os direitos reservados
+
+================================================================================
+

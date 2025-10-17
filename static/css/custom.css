@@ -1,0 +1,61 @@
+/* Custom CSS for SGEA */
+
+/* Estilos customizados adicionais para o sistema */
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-wrapper {
+  flex: 1;
+}
+
+/* Animações suaves */
+.card,
+.btn {
+  transition: all 0.3s ease;
+}
+
+/* Hover effects */
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Badges personalizados */
+.badge-evento {
+  padding: 0.5em 1em;
+  font-size: 0.9em;
+}
+
+/* Responsividade aprimorada */
+@media (max-width: 768px) {
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
+
+  .display-5 {
+    font-size: 2rem;
+  }
+}
+
+/* Loading spinner */
+.spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid var(--primary-color);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

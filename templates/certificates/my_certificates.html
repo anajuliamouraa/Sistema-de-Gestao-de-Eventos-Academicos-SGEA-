@@ -1,0 +1,55 @@
+{% extends 'base.html' %} {% block title %}Meus Certificados - SGEA{% endblock %} {% block content %}
+<div class="container mt-4 mb-5">
+  <div class="row mb-4">
+    <div class="col">
+      <h1 class="display-5"><i class="bi bi-award"></i> Meus Certificados</h1>
+      <p class="lead text-muted">Certificados de participação em eventos</p>
+    </div>
+  </div>
+
+  {% if certificates %}
+  <div class="row row-cols-1 row-cols-md-2 g-4">
+    {% for certificate in certificates %}
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title"><i class="bi bi-award text-warning"></i> {{ certificate.evento.titulo }}</h5>
+          <p class="card-text">
+            <span class="badge bg-secondary">{{ certificate.evento.get_tipo_evento_display }}</span>
+          </p>
+          <hr />
+          <p class="mb-2">
+            <strong><i class="bi bi-calendar"></i> Período:</strong><br />
+            {{ certificate.evento.data_inicio|date:"d/m/Y" }} até {{ certificate.evento.data_fim|date:"d/m/Y" }}
+          </p>
+          <p class="mb-2">
+            <strong><i class="bi bi-clock"></i> Carga Horária:</strong><br />
+            {{ certificate.carga_horaria }} hora(s)
+          </p>
+          <p class="mb-2">
+            <strong><i class="bi bi-calendar-check"></i> Emitido em:</strong><br />
+            {{ certificate.data_emissao|date:"d/m/Y" }}
+          </p>
+          <p class="mb-3">
+            <strong><i class="bi bi-shield-check"></i> Código de Verificação:</strong><br />
+            <small class="text-muted">{{ certificate.codigo_verificacao }}</small>
+          </p>
+          <div class="d-grid gap-2">
+            <a href="{% url 'certificates:view' certificate.codigo_verificacao %}" class="btn btn-primary"> <i class="bi bi-eye"></i> Visualizar </a>
+            <a href="{% url 'certificates:download' certificate.codigo_verificacao %}" class="btn btn-success"> <i class="bi bi-download"></i> Download PDF </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="alert alert-info text-center">
+    <i class="bi bi-info-circle"></i> Você ainda não possui certificados.
+    <hr />
+    <p>Os certificados são emitidos pelos organizadores após a conclusão dos eventos.</p>
+    <a href="{% url 'events:home' %}" class="btn btn-primary"> <i class="bi bi-calendar-event"></i> Ver Eventos Disponíveis </a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

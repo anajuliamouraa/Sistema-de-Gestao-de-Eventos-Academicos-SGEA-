@@ -1,0 +1,54 @@
+{% extends 'base.html' %} {% block title %}Minhas Inscrições - SGEA{% endblock %} {% block content %}
+<div class="container mt-4 mb-5">
+  <div class="row mb-4">
+    <div class="col">
+      <h1 class="display-5"><i class="bi bi-bookmark"></i> Minhas Inscrições</h1>
+      <p class="lead text-muted">Eventos nos quais você está inscrito</p>
+    </div>
+  </div>
+
+  {% if inscriptions %}
+  <div class="row">
+    {% for inscription in inscriptions %}
+    <div class="col-md-12 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <h5 class="card-title">{{ inscription.evento.titulo }}</h5>
+              <p class="card-text text-muted mb-2">
+                <span class="badge bg-secondary">{{ inscription.evento.get_tipo_evento_display }}</span>
+                <span class="badge bg-success">Inscrito</span>
+              </p>
+              <p class="mb-1">
+                <small> <i class="bi bi-calendar"></i> {{ inscription.evento.data_inicio|date:"d/m/Y" }} até {{ inscription.evento.data_fim|date:"d/m/Y" }} </small>
+              </p>
+              <p class="mb-1">
+                <small> <i class="bi bi-geo-alt"></i> {{ inscription.evento.local }} </small>
+              </p>
+              <p class="mb-1">
+                <small class="text-muted"> Inscrito em: {{ inscription.data_inscricao|date:"d/m/Y H:i" }} </small>
+              </p>
+            </div>
+            <div class="col-md-4 text-end">
+              <a href="{% url 'events:event_detail' inscription.evento.pk %}" class="btn btn-sm btn-primary mb-1"> <i class="bi bi-eye"></i> Ver Evento </a>
+              {% if inscription.certificado %}
+              <a href="{% url 'certificates:view' inscription.certificado.codigo_verificacao %}" class="btn btn-sm btn-success mb-1"> <i class="bi bi-award"></i> Ver Certificado </a>
+              {% endif %}
+              <a href="{% url 'events:inscription_cancel' inscription.pk %}" class="btn btn-sm btn-danger mb-1"> <i class="bi bi-x-circle"></i> Cancelar </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="alert alert-info text-center">
+    <i class="bi bi-info-circle"></i> Você ainda não está inscrito em nenhum evento.
+    <hr />
+    <a href="{% url 'events:home' %}" class="btn btn-primary"> <i class="bi bi-calendar-event"></i> Ver Eventos Disponíveis </a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

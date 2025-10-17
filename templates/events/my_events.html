@@ -1,0 +1,57 @@
+{% extends 'base.html' %} {% block title %}Meus Eventos - SGEA{% endblock %} {% block content %}
+<div class="container mt-4 mb-5">
+  <div class="row mb-4">
+    <div class="col">
+      <h1 class="display-5"><i class="bi bi-calendar-check"></i> Meus Eventos</h1>
+      <p class="lead text-muted">Eventos que você organiza</p>
+    </div>
+    <div class="col-auto">
+      <a href="{% url 'events:event_create' %}" class="btn btn-primary"> <i class="bi bi-plus-circle"></i> Criar Novo Evento </a>
+    </div>
+  </div>
+
+  {% if events %}
+  <div class="row">
+    {% for event in events %}
+    <div class="col-md-12 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <h5 class="card-title">{{ event.titulo }}</h5>
+              <p class="card-text text-muted mb-2">
+                <span class="badge bg-secondary">{{ event.get_tipo_evento_display }}</span>
+                {% if not event.ativo %}
+                <span class="badge bg-danger">Inativo</span>
+                {% endif %}
+              </p>
+              <p class="mb-1">
+                <small> <i class="bi bi-calendar"></i> {{ event.data_inicio|date:"d/m/Y" }} até {{ event.data_fim|date:"d/m/Y" }} </small>
+              </p>
+              <p class="mb-1">
+                <small>
+                  <i class="bi bi-people"></i>
+                  {{ event.get_inscritos_count }} inscritos de {{ event.vagas }} vagas
+                </small>
+              </p>
+            </div>
+            <div class="col-md-4 text-end">
+              <a href="{% url 'events:event_detail' event.pk %}" class="btn btn-sm btn-primary mb-1"> <i class="bi bi-eye"></i> Ver </a>
+              <a href="{% url 'events:event_inscriptions' event.pk %}" class="btn btn-sm btn-info mb-1"> <i class="bi bi-people"></i> Inscritos </a>
+              <a href="{% url 'events:event_update' event.pk %}" class="btn btn-sm btn-warning mb-1"> <i class="bi bi-pencil"></i> Editar </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="alert alert-info text-center">
+    <i class="bi bi-info-circle"></i> Você ainda não organizou nenhum evento.
+    <hr />
+    <a href="{% url 'events:event_create' %}" class="btn btn-primary"> <i class="bi bi-plus-circle"></i> Criar Primeiro Evento </a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

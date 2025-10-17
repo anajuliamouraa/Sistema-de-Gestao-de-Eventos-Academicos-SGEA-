@@ -1,0 +1,57 @@
+{% extends 'base.html' %} {% block title %}Emitir Certificado - SGEA{% endblock %} {% block content %}
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header"><i class="bi bi-file-earmark-text"></i> Emitir Certificado</div>
+        <div class="card-body">
+          <h5 class="mb-3">Dados da Inscrição</h5>
+
+          <div class="alert alert-info">
+            <p class="mb-2">
+              <strong><i class="bi bi-person"></i> Participante:</strong> {{ inscription.usuario.get_full_name }}
+            </p>
+            <p class="mb-2">
+              <strong><i class="bi bi-envelope"></i> E-mail:</strong> {{ inscription.usuario.email }}
+            </p>
+            <p class="mb-2">
+              <strong><i class="bi bi-calendar-event"></i> Evento:</strong> {{ inscription.evento.titulo }}
+            </p>
+            <p class="mb-0">
+              <strong><i class="bi bi-calendar"></i> Período:</strong> {{ inscription.evento.data_inicio|date:"d/m/Y" }} até {{ inscription.evento.data_fim|date:"d/m/Y" }}
+            </p>
+          </div>
+
+          <form method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+              <label for="{{ form.carga_horaria.id_for_label }}" class="form-label"> {{ form.carga_horaria.label }} <span class="text-danger">*</span> </label>
+              {{ form.carga_horaria }} {% if form.carga_horaria.errors %}
+              <div class="text-danger small">{{ form.carga_horaria.errors }}</div>
+              {% endif %}
+              <div class="form-text">Informe a carga horária total do evento.</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="{{ form.observacoes.id_for_label }}" class="form-label"> {{ form.observacoes.label }} </label>
+              {{ form.observacoes }} {% if form.observacoes.errors %}
+              <div class="text-danger small">{{ form.observacoes.errors }}</div>
+              {% endif %}
+            </div>
+
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+            {% endif %}
+
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-success"><i class="bi bi-check-circle"></i> Emitir Certificado</button>
+              <a href="{% url 'events:event_inscriptions' inscription.evento.pk %}" class="btn btn-secondary"> <i class="bi bi-x-circle"></i> Cancelar </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

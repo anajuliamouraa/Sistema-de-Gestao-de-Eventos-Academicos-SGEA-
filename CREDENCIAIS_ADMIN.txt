@@ -1,0 +1,46 @@
+================================================================================
+                    CREDENCIAIS PADRÃO DO ADMINISTRADOR
+================================================================================
+
+Para criar o superusuário padrão, execute:
+
+cd /home/s0ft/Sistema-de-Gestao-de-Eventos-Academicos-SGEA-
+source venv/bin/activate
+python manage.py shell
+
+Depois cole este código no shell Python:
+
+from users.models import CustomUser
+CustomUser.objects.filter(username='admin').delete()
+admin = CustomUser.objects.create_superuser(
+    username='admin',
+    email='admin@sgea.edu.br',
+    password='12345',
+    first_name='Administrador',
+    last_name='Sistema',
+    perfil='ORGANIZADOR',
+    instituicao_ensino='SGEA'
+)
+print('✅ Superusuário admin criado!')
+exit()
+
+================================================================================
+                           CREDENCIAIS DE ACESSO
+================================================================================
+
+Username: admin
+Password: 12345
+Perfil:   ORGANIZADOR
+
+Acesse:
+- Django Admin: http://127.0.0.1:8000/admin
+- Sistema:      http://127.0.0.1:8000/users/login
+
+================================================================================
+
+⚠️  AVISO DE SEGURANÇA:
+Esta senha é simples e deve ser usada APENAS para fins de desenvolvimento
+e demonstração. Em produção, use uma senha forte e segura!
+
+================================================================================
+

@@ -1,0 +1,30 @@
+{% extends 'base.html' %} {% block title %}Cancelar Inscrição - SGEA{% endblock %} {% block content %}
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card border-warning">
+        <div class="card-header bg-warning"><i class="bi bi-exclamation-triangle"></i> Confirmar Cancelamento</div>
+        <div class="card-body">
+          <h5 class="card-title">Tem certeza que deseja cancelar sua inscrição?</h5>
+          <p class="card-text">
+            <strong>Evento:</strong> {{ inscription.evento.titulo }}<br />
+            <strong>Data:</strong> {{ inscription.evento.data_inicio|date:"d/m/Y" }}<br />
+            <strong>Local:</strong> {{ inscription.evento.local }}
+          </p>
+          <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i>
+            Após o cancelamento, sua vaga ficará disponível para outros participantes.
+          </div>
+          <form method="post">
+            {% csrf_token %}
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-danger"><i class="bi bi-x-circle"></i> Sim, Cancelar Inscrição</button>
+              <a href="{% url 'events:event_detail' inscription.evento.pk %}" class="btn btn-secondary"> <i class="bi bi-arrow-left"></i> Voltar </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

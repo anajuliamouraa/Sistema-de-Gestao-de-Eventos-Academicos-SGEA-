@@ -1,0 +1,47 @@
+{% extends 'base.html' %} {% block title %}Inscrever-se no Evento - SGEA{% endblock %} {% block content %}
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header"><i class="bi bi-check-circle"></i> Confirmar Inscrição</div>
+        <div class="card-body">
+          <h5 class="mb-3">{{ event.titulo }}</h5>
+
+          <div class="alert alert-info">
+            <p class="mb-2">
+              <strong><i class="bi bi-calendar"></i> Data:</strong> {{ event.data_inicio|date:"d/m/Y" }} até {{ event.data_fim|date:"d/m/Y" }}
+            </p>
+            <p class="mb-2">
+              <strong><i class="bi bi-clock"></i> Horário:</strong> {{ event.horario_inicio }} às {{ event.horario_fim }}
+            </p>
+            <p class="mb-0">
+              <strong><i class="bi bi-geo-alt"></i> Local:</strong> {{ event.local }}
+            </p>
+          </div>
+
+          <form method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+              <label for="{{ form.observacoes.id_for_label }}" class="form-label"> {{ form.observacoes.label }} </label>
+              {{ form.observacoes }} {% if form.observacoes.errors %}
+              <div class="text-danger small">{{ form.observacoes.errors }}</div>
+              {% endif %}
+            </div>
+
+            <div class="alert alert-warning">
+              <i class="bi bi-info-circle"></i>
+              Ao confirmar, você estará reservando uma vaga neste evento.
+            </div>
+
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-success"><i class="bi bi-check-circle"></i> Confirmar Inscrição</button>
+              <a href="{% url 'events:event_detail' event.pk %}" class="btn btn-secondary"> <i class="bi bi-x-circle"></i> Cancelar </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

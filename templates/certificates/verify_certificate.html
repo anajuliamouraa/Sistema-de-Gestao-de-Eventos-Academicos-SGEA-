@@ -1,0 +1,81 @@
+{% extends 'base.html' %} {% block title %}Verificar Certificado - SGEA{% endblock %} {% block content %}
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header"><i class="bi bi-shield-check"></i> Verificar Autenticidade de Certificado</div>
+        <div class="card-body">
+          <p class="text-muted">Digite o código de verificação do certificado para confirmar sua autenticidade. O código está localizado no rodapé do certificado.</p>
+
+          <form method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+              <label for="{{ form.codigo_verificacao.id_for_label }}" class="form-label"> {{ form.codigo_verificacao.label }} </label>
+              {{ form.codigo_verificacao }} {% if form.codigo_verificacao.errors %}
+              <div class="text-danger small">{{ form.codigo_verificacao.errors }}</div>
+              {% endif %}
+              <div class="form-text">Formato: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</div>
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i> Verificar Certificado</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      {% if certificate %}
+      <div class="card mt-4 border-success">
+        <div class="card-header bg-success text-white"><i class="bi bi-check-circle"></i> Certificado Válido</div>
+        <div class="card-body">
+          <h5 class="card-title text-success"><i class="bi bi-award"></i> Certificado Encontrado</h5>
+
+          <hr />
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <strong>Participante:</strong><br />
+              {{ certificate.participante.get_full_name }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong>Evento:</strong><br />
+              {{ certificate.evento.titulo }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong>Tipo:</strong><br />
+              {{ certificate.evento.get_tipo_evento_display }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong>Carga Horária:</strong><br />
+              {{ certificate.carga_horaria }} hora(s)
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong>Período do Evento:</strong><br />
+              {{ certificate.evento.data_inicio|date:"d/m/Y" }} até {{ certificate.evento.data_fim|date:"d/m/Y" }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong>Data de Emissão:</strong><br />
+              {{ certificate.data_emissao|date:"d/m/Y" }}
+            </div>
+            <div class="col-md-12 mb-3">
+              <strong>Organizador:</strong><br />
+              {{ certificate.emitido_por.get_full_name }}
+            </div>
+          </div>
+
+          <div class="alert alert-success">
+            <i class="bi bi-check-circle"></i>
+            Este certificado foi emitido pelo Sistema de Gestão de Eventos Acadêmicos (SGEA) e sua autenticidade está confirmada.
+          </div>
+
+          <div class="d-grid">
+            <a href="{% url 'certificates:view' certificate.codigo_verificacao %}" class="btn btn-primary"> <i class="bi bi-eye"></i> Visualizar Certificado Completo </a>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'base.html' %} {% block title %}Inscritos - {{ event.titulo }} - SGEA{% endblock %} {% block content %}
+<div class="container mt-4 mb-5">
+  <div class="row mb-4">
+    <div class="col">
+      <h1 class="display-6"><i class="bi bi-people"></i> Inscritos</h1>
+      <p class="lead text-muted">{{ event.titulo }}</p>
+    </div>
+    <div class="col-auto">
+      <a href="{% url 'events:event_detail' event.pk %}" class="btn btn-secondary"> <i class="bi bi-arrow-left"></i> Voltar </a>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3">
+          <h6>Total de Inscritos</h6>
+          <h3 class="text-primary">{{ inscriptions.count }}</h3>
+        </div>
+        <div class="col-md-3">
+          <h6>Vagas Totais</h6>
+          <h3>{{ event.vagas }}</h3>
+        </div>
+        <div class="col-md-3">
+          <h6>Vagas Disponíveis</h6>
+          <h3 class="text-success">{{ event.vagas_disponiveis }}</h3>
+        </div>
+        <div class="col-md-3">
+          <h6>Taxa de Ocupação</h6>
+          <h3>{% widthratio inscriptions.count event.vagas 100 %}%</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% if inscriptions %}
+  <div class="card">
+    <div class="card-header"><i class="bi bi-list"></i> Lista de Inscritos</div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>E-mail</th>
+              <th>Perfil</th>
+              <th>Instituição</th>
+              <th>Data de Inscrição</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for inscription in inscriptions %}
+            <tr>
+              <td>{{ inscription.usuario.get_full_name }}</td>
+              <td>{{ inscription.usuario.email }}</td>
+              <td><span class="badge bg-secondary">{{ inscription.usuario.get_perfil_display }}</span></td>
+              <td>{{ inscription.usuario.instituicao_ensino|default:"-" }}</td>
+              <td>{{ inscription.data_inscricao|date:"d/m/Y H:i" }}</td>
+              <td>
+                {% if inscription.certificado %}
+                <a href="{% url 'certificates:view' inscription.certificado.codigo_verificacao %}" class="btn btn-sm btn-success" title="Ver Certificado">
+                  <i class="bi bi-award"></i>
+                </a>
+                {% else %}
+                <a href="{% url 'certificates:issue' inscription.pk %}" class="btn btn-sm btn-primary" title="Emitir Certificado">
+                  <i class="bi bi-file-earmark-text"></i>
+                </a>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="alert alert-info text-center"><i class="bi bi-info-circle"></i> Ainda não há inscritos neste evento.</div>
+  {% endif %}
+</div>
+{% endblock %}
