@@ -2,13 +2,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.views.generic import RedirectView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', RedirectView.as_view(url='/events/', permanent=False), name='index'),
+    path('', include('events.urls')),
     path('users/', include('users.urls')),
-    path('events/', include('events.urls')),
     path('certificates/', include('certificates.urls')),
+    path('audit/', include('audit.urls')),
+    path('api/', include('api.urls')),
 ]
 
 if settings.DEBUG:

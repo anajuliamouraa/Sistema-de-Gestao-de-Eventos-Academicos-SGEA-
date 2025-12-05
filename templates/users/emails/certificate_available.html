@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificado Disponível - SGEA</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #1a5490;
+            margin-bottom: 20px;
+        }
+        .logo {
+            font-size: 36px;
+            color: #1a5490;
+            font-weight: bold;
+        }
+        .logo-icon {
+            color: #d4af37;
+        }
+        .certificate-badge {
+            background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+            color: #2c3e50;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .certificate-badge h2 {
+            margin: 0;
+        }
+        .certificate-info {
+            background-color: #f8f9fa;
+            border: 2px solid #d4af37;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .certificate-code {
+            font-size: 14px;
+            color: #666;
+            margin-top: 10px;
+        }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #1a5490 0%, #2c3e50 100%);
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 5px;
+        }
+        .btn-gold {
+            background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+            color: #2c3e50;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .footer {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            margin-top: 30px;
+            color: #666;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <span class="logo-icon">📅</span> SGEA
+            </div>
+        </div>
+        
+        <div class="certificate-badge">
+            <h2>🎓 Seu Certificado está Disponível!</h2>
+        </div>
+        
+        <p>Olá <strong>{{ user.first_name }}</strong>,</p>
+        
+        <p>Parabéns pela sua participação! Seu certificado do evento 
+        <strong>{{ evento.titulo }}</strong> já está disponível para download.</p>
+        
+        <div class="certificate-info">
+            <h3 style="margin-top: 0; color: #1a5490;">{{ evento.titulo }}</h3>
+            <p><strong>Carga Horária:</strong> {{ certificate.carga_horaria }}h</p>
+            <p><strong>Data de Emissão:</strong> {{ certificate.data_emissao|date:"d/m/Y" }}</p>
+            <p class="certificate-code">
+                <strong>Código de Verificação:</strong><br>
+                <code style="font-size: 12px;">{{ certificate.codigo_verificacao }}</code>
+            </p>
+        </div>
+        
+        <div class="text-center">
+            <a href="{{ certificate_url }}" class="btn btn-gold">🎓 Ver Certificado</a>
+            <a href="{{ site_url }}/certificates/download/{{ certificate.codigo_verificacao }}/" class="btn">📥 Download PDF</a>
+        </div>
+        
+        <p style="margin-top: 20px;">
+            Este certificado pode ser verificado a qualquer momento através do código de verificação 
+            em nosso sistema.
+        </p>
+        
+        <div class="footer">
+            <p><strong>📅 SGEA</strong> - Sistema de Gestão de Eventos Acadêmicos</p>
+            <p>© 2025 - UniCEUB</p>
+        </div>
+    </div>
+</body>
+</html>
+

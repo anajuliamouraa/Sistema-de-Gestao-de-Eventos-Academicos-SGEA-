@@ -1,82 +1,151 @@
-{% extends 'base.html' %} {% block title %}Inscritos - {{ event.titulo }} - SGEA{% endblock %} {% block content %}
-<div class="container mt-4 mb-5">
-  <div class="row mb-4">
-    <div class="col">
-      <h1 class="display-6"><i class="bi bi-people"></i> Inscritos</h1>
-      <p class="lead text-muted">{{ event.titulo }}</p>
-    </div>
-    <div class="col-auto">
-      <a href="{% url 'events:event_detail' event.pk %}" class="btn btn-secondary"> <i class="bi bi-arrow-left"></i> Voltar </a>
-    </div>
-  </div>
+{% extends 'base.html' %}
 
-  <div class="card mb-4">
-    <div class="card-body">
-      <div class="row">
-        <div class="col-md-3">
-          <h6>Total de Inscritos</h6>
-          <h3 class="text-primary">{{ inscriptions.count }}</h3>
-        </div>
-        <div class="col-md-3">
-          <h6>Vagas Totais</h6>
-          <h3>{{ event.vagas }}</h3>
-        </div>
-        <div class="col-md-3">
-          <h6>Vagas Disponíveis</h6>
-          <h3 class="text-success">{{ event.vagas_disponiveis }}</h3>
-        </div>
-        <div class="col-md-3">
-          <h6>Taxa de Ocupação</h6>
-          <h3>{% widthratio inscriptions.count event.vagas 100 %}%</h3>
+{% block title %}Inscritos - {{ event.titulo }} - SGEA{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>
+          <i class="bi bi-people" aria-hidden="true"></i> Inscritos no Evento
+        </h2>
+        <div>
+          {% if event.is_passado or event.is_em_andamento %}
+          <a href="{% url 'events:confirm_presence' event.pk %}" class="btn btn-success me-2">
+            <i class="bi bi-check2-square" aria-hidden="true"></i> Confirmar Presenças
+          </a>
+          {% endif %}
+          <a href="{% url 'events:event_detail' event.pk %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left" aria-hidden="true"></i> Voltar
+          </a>
         </div>
       </div>
-    </div>
-  </div>
-
-  {% if inscriptions %}
-  <div class="card">
-    <div class="card-header"><i class="bi bi-list"></i> Lista de Inscritos</div>
-    <div class="card-body p-0">
-      <div class="table-responsive">
-        <table class="table table-hover mb-0">
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>E-mail</th>
-              <th>Perfil</th>
-              <th>Instituição</th>
-              <th>Data de Inscrição</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for inscription in inscriptions %}
-            <tr>
-              <td>{{ inscription.usuario.get_full_name }}</td>
-              <td>{{ inscription.usuario.email }}</td>
-              <td><span class="badge bg-secondary">{{ inscription.usuario.get_perfil_display }}</span></td>
-              <td>{{ inscription.usuario.instituicao_ensino|default:"-" }}</td>
-              <td>{{ inscription.data_inscricao|date:"d/m/Y H:i" }}</td>
-              <td>
-                {% if inscription.certificado %}
-                <a href="{% url 'certificates:view' inscription.certificado.codigo_verificacao %}" class="btn btn-sm btn-success" title="Ver Certificado">
-                  <i class="bi bi-award"></i>
-                </a>
-                {% else %}
-                <a href="{% url 'certificates:issue' inscription.pk %}" class="btn btn-sm btn-primary" title="Emitir Certificado">
-                  <i class="bi bi-file-earmark-text"></i>
-                </a>
-                {% endif %}
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+      
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="mb-0">{{ event.titulo }}</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <p class="mb-1">
+                <i class="bi bi-calendar" aria-hidden="true"></i>
+                <strong>Data:</strong> {{ event.data_inicio|date:"d/m/Y" }}
+                {% if event.data_inicio != event.data_fim %} a {{ event.data_fim|date:"d/m/Y" }}{% endif %}
+              </p>
+            </div>
+            <div class="col-md-4">
+              <p class="mb-1">
+                <i class="bi bi-geo-alt" aria-hidden="true"></i>
+                <strong>Local:</strong> {{ event.local }}
+              </p>
+            </div>
+            <div class="col-md-4">
+              <p class="mb-1">
+                <i class="bi bi-people" aria-hidden="true"></i>
+                <strong>Vagas:</strong> {{ event.get_inscritos_count }}/{{ event.vagas }}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
+      
+      {% if inscriptions %}
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="table-dark">
+                <tr>
+                  <th>Participante</th>
+                  <th>Email</th>
+                  <th>Perfil</th>
+                  <th>Instituição</th>
+                  <th>Data Inscrição</th>
+                  <th>Presença</th>
+                  <th>Certificado</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for inscription in inscriptions %}
+                <tr>
+                  <td>
+                    <strong>{{ inscription.usuario.get_full_name }}</strong>
+                    {% if inscription.observacoes %}
+                    <br><small class="text-muted">{{ inscription.observacoes|truncatechars:50 }}</small>
+                    {% endif %}
+                  </td>
+                  <td>{{ inscription.usuario.email }}</td>
+                  <td>
+                    <span class="badge 
+                      {% if inscription.usuario.perfil == 'PROFESSOR' %}bg-primary
+                      {% else %}bg-secondary{% endif %}">
+                      {{ inscription.usuario.get_perfil_display }}
+                    </span>
+                  </td>
+                  <td>{{ inscription.usuario.instituicao_ensino|default:"-" }}</td>
+                  <td>{{ inscription.data_inscricao|date:"d/m/Y H:i" }}</td>
+                  <td>
+                    {% if inscription.presenca_confirmada %}
+                    <span class="badge bg-success">
+                      <i class="bi bi-check-lg" aria-hidden="true"></i> Confirmada
+                    </span>
+                    {% else %}
+                    <span class="badge bg-secondary">
+                      <i class="bi bi-dash" aria-hidden="true"></i> Pendente
+                    </span>
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if inscription.certificado %}
+                    <a href="{% url 'certificates:view' inscription.certificado.codigo_verificacao %}" 
+                       class="btn btn-sm btn-success" title="Ver Certificado">
+                      <i class="bi bi-award" aria-hidden="true"></i>
+                    </a>
+                    {% elif event.pode_emitir_certificados and inscription.presenca_confirmada %}
+                    <a href="{% url 'certificates:issue' inscription.pk %}" 
+                       class="btn btn-sm btn-outline-primary" title="Emitir Certificado">
+                      <i class="bi bi-file-earmark-plus" aria-hidden="true"></i>
+                    </a>
+                    {% elif not event.pode_emitir_certificados %}
+                    <span class="text-muted" title="Aguardando término do evento">
+                      <i class="bi bi-clock" aria-hidden="true"></i>
+                    </span>
+                    {% elif not inscription.presenca_confirmada %}
+                    <span class="text-muted" title="Presença não confirmada">
+                      <i class="bi bi-x" aria-hidden="true"></i>
+                    </span>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="mt-3">
+            <p class="text-muted mb-0">
+              <i class="bi bi-info-circle" aria-hidden="true"></i>
+              Total de inscritos: <strong>{{ inscriptions|length }}</strong>
+              {% if event.pode_emitir_certificados %}
+              | Certificados podem ser emitidos para participantes com presença confirmada.
+              {% else %}
+              | Os certificados estarão disponíveis após o término do evento.
+              {% endif %}
+            </p>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="card">
+        <div class="card-body text-center py-5">
+          <i class="bi bi-inbox display-4 text-muted" aria-hidden="true"></i>
+          <p class="text-muted mt-3">Nenhum inscrito neste evento ainda.</p>
+        </div>
+      </div>
+      {% endif %}
     </div>
   </div>
-  {% else %}
-  <div class="alert alert-info text-center"><i class="bi bi-info-circle"></i> Ainda não há inscritos neste evento.</div>
-  {% endif %}
 </div>
 {% endblock %}

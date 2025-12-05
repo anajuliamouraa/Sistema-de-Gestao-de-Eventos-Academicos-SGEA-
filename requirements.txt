@@ -3,4 +3,12 @@ Pillow==10.1.0
 reportlab==4.0.7
 psycopg2-binary==2.9.9
 python-decouple==3.8
-
+djangorestframework==3.14.0
+djangorestframework-simplejwt==5.3.0
+django-ratelimit==4.1.0
+django-templated-mail==1.1.1
+celery==5.3.4
+redis==5.0.1
+django-phonenumber-field==7.2.0
+phonenumbers==8.13.26
+python-magic==0.4.27

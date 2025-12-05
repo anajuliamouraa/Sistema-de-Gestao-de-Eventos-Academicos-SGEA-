@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Reenviar Ativação - SGEA{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <div class="card">
+        <div class="card-header text-center">
+          <i class="bi bi-envelope-arrow-up" aria-hidden="true"></i> Reenviar Email de Ativação
+        </div>
+        <div class="card-body">
+          <p class="text-muted">
+            Digite seu email para receber um novo código de ativação.
+          </p>
+          
+          <form method="POST" novalidate>
+            {% csrf_token %}
+            
+            <div class="mb-4">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" name="email" id="email" class="form-control" 
+                     placeholder="Digite seu email" required>
+            </div>
+            
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary">
+                <i class="bi bi-envelope" aria-hidden="true"></i> Enviar Código
+              </button>
+            </div>
+          </form>
+          
+          <hr class="my-4">
+          
+          <div class="text-center">
+            <a href="{% url 'users:login' %}" class="btn btn-outline-secondary">
+              <i class="bi bi-arrow-left" aria-hidden="true"></i> Voltar para Login
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

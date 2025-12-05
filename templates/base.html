@@ -3,156 +3,345 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="SGEA - Sistema de Gestão de Eventos Acadêmicos. Gerencie eventos, inscrições e certificados de forma simples e eficiente." />
+    <meta name="theme-color" content="#1a5490" />
     <title>{% block title %}SGEA - Sistema de Gestão de Eventos Acadêmicos{% endblock %}</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" />
+    <!-- jQuery UI CSS (Datepicker) -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
+    <!-- jQuery Timepicker CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.css" />
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
     <style>
       :root {
         --primary-color: #1a5490;
+        --primary-dark: #0d3a66;
         --secondary-color: #2c3e50;
         --accent-color: #d4af37;
+        --accent-light: #f4d03f;
         --success-color: #28a745;
         --danger-color: #dc3545;
+        --warning-color: #ffc107;
+        --info-color: #17a2b8;
+        --light-bg: #f8f9fa;
+        --dark-text: #212529;
+        --muted-text: #6c757d;
+      }
+
+      * {
+        box-sizing: border-box;
       }
 
       body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #f8f9fa;
+        font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--light-bg);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
       }
 
+      /* Skip link para acessibilidade */
+      .skip-link {
+        position: absolute;
+        top: -40px;
+        left: 0;
+        background: var(--primary-color);
+        color: white;
+        padding: 8px 16px;
+        z-index: 9999;
+        transition: top 0.3s;
+      }
+
+      .skip-link:focus {
+        top: 0;
+        color: white;
+      }
+
+      /* Navbar */
       .navbar {
         background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        padding: 0.75rem 0;
       }
 
       .navbar-brand {
-        font-weight: bold;
+        font-weight: 700;
         font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
       }
 
-      .navbar-brand i {
-        color: var(--accent-color);
+      .navbar-brand .logo-icon {
+        background: var(--accent-color);
+        color: var(--secondary-color);
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+      }
+
+      .navbar-brand span {
+        color: white;
       }
 
       .nav-link {
         transition: all 0.3s ease;
-      }
-
-      .nav-link:hover {
-        background-color: rgba(255, 255, 255, 0.1);
         border-radius: 5px;
+        margin: 0 2px;
+        padding: 0.5rem 1rem !important;
       }
 
+      .nav-link:hover, .nav-link:focus {
+        background-color: rgba(255, 255, 255, 0.15);
+      }
+
+      /* Botões */
       .btn-primary {
-        background-color: var(--primary-color);
-        border-color: var(--primary-color);
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        border: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
       }
 
-      .btn-primary:hover {
-        background-color: var(--secondary-color);
-        border-color: var(--secondary-color);
+      .btn-primary:hover, .btn-primary:focus {
+        background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary-color) 100%);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(26, 84, 144, 0.4);
       }
 
+      .btn-accent {
+        background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-light) 100%);
+        color: var(--secondary-color);
+        border: none;
+        font-weight: 600;
+      }
+
+      .btn-accent:hover {
+        background: linear-gradient(135deg, var(--accent-light) 0%, var(--accent-color) 100%);
+        color: var(--secondary-color);
+      }
+
+      /* Cards */
       .card {
         border: none;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
       }
 
       .card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
       }
 
       .card-header {
         background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
         color: white;
-        font-weight: bold;
-        border-radius: 10px 10px 0 0 !important;
+        font-weight: 600;
+        border-radius: 12px 12px 0 0 !important;
+        padding: 1rem 1.25rem;
       }
 
+      /* Footer */
       .footer {
-        background-color: var(--secondary-color);
+        background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-dark) 100%);
         color: white;
         padding: 2rem 0;
-        margin-top: 3rem;
+        margin-top: auto;
       }
 
-      .badge-custom {
+      .footer a {
+        color: var(--accent-color);
+        text-decoration: none;
+      }
+
+      .footer a:hover {
+        color: var(--accent-light);
+      }
+
+      /* Badges */
+      .badge-accent {
         background-color: var(--accent-color);
         color: var(--secondary-color);
       }
 
+      /* Alerts */
       .alert {
         border-radius: 10px;
         border: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       }
 
+      /* Forms */
+      .form-control:focus, .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(26, 84, 144, 0.25);
+      }
+
+      /* Content wrapper */
       .content-wrapper {
-        min-height: calc(100vh - 200px);
+        flex: 1;
+        padding: 1rem 0;
+      }
+
+      /* Acessibilidade - foco visível */
+      *:focus-visible {
+        outline: 3px solid var(--accent-color);
+        outline-offset: 2px;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .navbar-brand {
+          font-size: 1.2rem;
+        }
+        
+        .navbar-brand .logo-icon {
+          width: 32px;
+          height: 32px;
+          font-size: 1rem;
+        }
+      }
+
+      /* jQuery UI Customization */
+      .ui-datepicker {
+        font-family: 'Poppins', sans-serif;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .ui-datepicker-header {
+        background: var(--primary-color);
+        border: none;
+        border-radius: 8px 8px 0 0;
+      }
+
+      .ui-state-active {
+        background: var(--primary-color) !important;
+        border-color: var(--primary-color) !important;
+      }
+
+      /* Timepicker customization */
+      .ui-timepicker-container {
+        font-family: 'Poppins', sans-serif;
+      }
+
+      .ui-timepicker-standard .ui-state-hover {
+        background: var(--primary-color);
+        color: white;
       }
     </style>
 
     {% block extra_css %}{% endblock %}
   </head>
   <body>
+    <!-- Skip link para acessibilidade -->
+    <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
+
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark" role="navigation" aria-label="Navegação principal">
       <div class="container">
-        <a class="navbar-brand" href="{% url 'events:home' %}"> <i class="bi bi-calendar-event"></i> SGEA </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <a class="navbar-brand" href="{% url 'events:home' %}" aria-label="SGEA - Página inicial">
+          <span class="logo-icon" aria-hidden="true"><i class="bi bi-calendar-event"></i></span>
+          <span>SGEA</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Abrir menu de navegação">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'events:home' %}"> <i class="bi bi-house-door"></i> Início </a>
+              <a class="nav-link" href="{% url 'events:home' %}">
+                <i class="bi bi-house-door" aria-hidden="true"></i> Início
+              </a>
             </li>
             {% if user.is_authenticated %}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'events:my_inscriptions' %}"> <i class="bi bi-bookmark"></i> Minhas Inscrições </a>
+              <a class="nav-link" href="{% url 'events:my_inscriptions' %}">
+                <i class="bi bi-bookmark" aria-hidden="true"></i> Minhas Inscrições
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'certificates:my_certificates' %}"> <i class="bi bi-award"></i> Meus Certificados </a>
+              <a class="nav-link" href="{% url 'certificates:my_certificates' %}">
+                <i class="bi bi-award" aria-hidden="true"></i> Meus Certificados
+              </a>
             </li>
             {% if user.is_organizador %}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'events:my_events' %}"> <i class="bi bi-calendar-check"></i> Meus Eventos </a>
+              <a class="nav-link" href="{% url 'events:my_events' %}">
+                <i class="bi bi-calendar-check" aria-hidden="true"></i> Meus Eventos
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'events:event_create' %}"> <i class="bi bi-plus-circle"></i> Criar Evento </a>
+              <a class="nav-link" href="{% url 'events:event_create' %}">
+                <i class="bi bi-plus-circle" aria-hidden="true"></i> Criar Evento
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'audit:list' %}">
+                <i class="bi bi-shield-check" aria-hidden="true"></i> Auditoria
+              </a>
             </li>
             {% endif %}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'certificates:verify' %}"> <i class="bi bi-check-circle"></i> Verificar Certificado </a>
+              <a class="nav-link" href="{% url 'certificates:verify' %}">
+                <i class="bi bi-check-circle" aria-hidden="true"></i> Verificar Certificado
+              </a>
             </li>
             {% endif %}
           </ul>
           <ul class="navbar-nav">
             {% if user.is_authenticated %}
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"> <i class="bi bi-person-circle"></i> {{ user.get_full_name|default:user.username }} </a>
-              <ul class="dropdown-menu dropdown-menu-end">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" 
+                 data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person-circle" aria-hidden="true"></i> 
+                {{ user.get_full_name|default:user.username }}
+                {% if not user.email_confirmed %}
+                <span class="badge bg-warning text-dark" title="Email não confirmado">!</span>
+                {% endif %}
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                 <li>
-                  <a class="dropdown-item" href="{% url 'users:profile' %}"> <i class="bi bi-person"></i> Meu Perfil </a>
+                  <span class="dropdown-item-text">
+                    <small class="text-muted">{{ user.get_perfil_display }}</small>
+                  </span>
                 </li>
                 <li><hr class="dropdown-divider" /></li>
                 <li>
-                  <a class="dropdown-item" href="{% url 'users:logout' %}"> <i class="bi bi-box-arrow-right"></i> Sair </a>
+                  <a class="dropdown-item" href="{% url 'users:profile' %}">
+                    <i class="bi bi-person" aria-hidden="true"></i> Meu Perfil
+                  </a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'users:logout' %}">
+                    <i class="bi bi-box-arrow-right" aria-hidden="true"></i> Sair
+                  </a>
                 </li>
               </ul>
             </li>
             {% else %}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'users:login' %}"> <i class="bi bi-box-arrow-in-right"></i> Entrar </a>
+              <a class="nav-link" href="{% url 'users:login' %}">
+                <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i> Entrar
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'users:register' %}"> <i class="bi bi-person-plus"></i> Cadastrar </a>
+              <a class="nav-link btn btn-accent btn-sm ms-2 px-3" href="{% url 'users:register' %}">
+                <i class="bi bi-person-plus" aria-hidden="true"></i> Cadastrar
+              </a>
             </li>
             {% endif %}
           </ul>
@@ -162,29 +351,155 @@
 
     <!-- Messages -->
     {% if messages %}
-    <div class="container mt-3">
+    <div class="container mt-3" role="alert" aria-live="polite">
       {% for message in messages %}
       <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {% if message.tags == 'success' %}
+        <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+        {% elif message.tags == 'error' or message.tags == 'danger' %}
+        <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+        {% elif message.tags == 'warning' %}
+        <i class="bi bi-exclamation-circle-fill" aria-hidden="true"></i>
+        {% else %}
+        <i class="bi bi-info-circle-fill" aria-hidden="true"></i>
+        {% endif %}
         {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
       </div>
       {% endfor %}
     </div>
     {% endif %}
 
     <!-- Content -->
-    <div class="content-wrapper">{% block content %}{% endblock %}</div>
+    <main id="main-content" class="content-wrapper" role="main">
+      {% block content %}{% endblock %}
+    </main>
 
     <!-- Footer -->
-    <footer class="footer">
-      <div class="container text-center">
-        <p class="mb-0"><i class="bi bi-calendar-event"></i> SGEA - Sistema de Gestão de Eventos Acadêmicos</p>
-        <p class="mb-0 small mt-2">© 2025 - Ana Júlia Moura & Vinicius Martin - UniCEUB</p>
+    <footer class="footer" role="contentinfo">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 mb-3 mb-md-0">
+            <div class="d-flex align-items-center mb-2">
+              <span class="logo-icon me-2" style="background: var(--accent-color); color: var(--secondary-color); 
+                    width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; 
+                    justify-content: center; font-size: 1.1rem;">
+                <i class="bi bi-calendar-event" aria-hidden="true"></i>
+              </span>
+              <strong style="font-size: 1.2rem;">SGEA</strong>
+            </div>
+            <p class="mb-0 small">Sistema de Gestão de Eventos Acadêmicos</p>
+            <p class="mb-0 small text-muted">Facilitando a organização de eventos educacionais</p>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <p class="mb-1 small">© 2025 - Ana Júlia Moura & Vinicius Martin</p>
+            <p class="mb-0 small">
+              <a href="https://github.com/anajuliamouraa/Sistema-de-Gestao-de-Eventos-Academicos-SGEA-" 
+                 target="_blank" rel="noopener noreferrer">
+                <i class="bi bi-github" aria-hidden="true"></i> GitHub
+              </a>
+              <span class="mx-2">|</span>
+              <a href="/api/" target="_blank">
+                <i class="bi bi-code-slash" aria-hidden="true"></i> API
+              </a>
+            </p>
+          </div>
+        </div>
       </div>
     </footer>
 
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- jQuery UI (Datepicker) -->
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <!-- jQuery Timepicker -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.js"></script>
+    <!-- jQuery Mask -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      $(document).ready(function() {
+        // Configuração do Datepicker em português
+        $.datepicker.regional['pt-BR'] = {
+          closeText: 'Fechar',
+          prevText: '&#x3c;Anterior',
+          nextText: 'Próximo&#x3e;',
+          currentText: 'Hoje',
+          monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
+                       'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+          monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun',
+                           'Jul','Ago','Set','Out','Nov','Dez'],
+          dayNames: ['Domingo','Segunda-feira','Terça-feira','Quarta-feira',
+                    'Quinta-feira','Sexta-feira','Sábado'],
+          dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],
+          dayNamesMin: ['D','S','T','Q','Q','S','S'],
+          weekHeader: 'Sm',
+          dateFormat: 'dd/mm/yy',
+          firstDay: 0,
+          isRTL: false,
+          showMonthAfterYear: false,
+          yearSuffix: ''
+        };
+        $.datepicker.setDefaults($.datepicker.regional['pt-BR']);
+
+        // Inicializar Datepickers
+        $('.datepicker').datepicker({
+          dateFormat: 'yy-mm-dd',
+          changeMonth: true,
+          changeYear: true,
+          minDate: 0,  // Não permitir datas passadas
+          showButtonPanel: true
+        });
+
+        // Inicializar Timepickers
+        $('.timepicker').timepicker({
+          timeFormat: 'HH:mm',
+          interval: 15,
+          minTime: '06:00',
+          maxTime: '23:00',
+          defaultTime: '08:00',
+          startTime: '06:00',
+          dynamic: false,
+          dropdown: true,
+          scrollbar: true
+        });
+
+        // Máscara de telefone
+        $('.phone-mask').mask('(00) 00000-0000', {
+          onKeyPress: function(phone, e, field, options) {
+            var masks = ['(00) 00000-0000', '(00) 0000-00009'];
+            var mask = (phone.length > 14) ? masks[0] : masks[1];
+            $('.phone-mask').mask(mask, options);
+          }
+        });
+
+        // Auto-hide alerts após 5 segundos
+        setTimeout(function() {
+          $('.alert').fadeOut('slow');
+        }, 5000);
+
+        // Validação de arquivos de imagem
+        $('input[type="file"][accept*="image"]').on('change', function() {
+          var file = this.files[0];
+          if (file) {
+            var validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            if (!validTypes.includes(file.type)) {
+              alert('Por favor, selecione uma imagem válida (JPG, PNG, GIF ou WebP)');
+              $(this).val('');
+              return;
+            }
+            if (file.size > 5 * 1024 * 1024) {
+              alert('A imagem não pode exceder 5MB');
+              $(this).val('');
+              return;
+            }
+          }
+        });
+      });
+    </script>
+
     {% block extra_js %}{% endblock %}
   </body>
 </html>

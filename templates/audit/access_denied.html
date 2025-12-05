@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Acesso Negado - SGEA{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <div class="card">
+                <div class="card-body py-5">
+                    <i class="bi bi-shield-x display-1 text-danger"></i>
+                    <h2 class="mt-4">Acesso Negado</h2>
+                    <p class="text-muted">
+                        Você não tem permissão para acessar os registros de auditoria.
+                        <br>
+                        Esta funcionalidade está disponível apenas para organizadores.
+                    </p>
+                    <a href="{% url 'events:home' %}" class="btn btn-primary mt-3">
+                        <i class="bi bi-house"></i> Voltar para a página inicial
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

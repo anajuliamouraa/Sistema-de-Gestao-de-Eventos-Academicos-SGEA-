@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscrição Confirmada - SGEA</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #1a5490;
+            margin-bottom: 20px;
+        }
+        .logo {
+            font-size: 36px;
+            color: #1a5490;
+            font-weight: bold;
+        }
+        .logo-icon {
+            color: #d4af37;
+        }
+        .success-badge {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .event-card {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .event-card h3 {
+            color: #1a5490;
+            margin-top: 0;
+        }
+        .event-detail {
+            display: flex;
+            margin: 10px 0;
+        }
+        .event-detail-icon {
+            margin-right: 10px;
+            color: #1a5490;
+        }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #1a5490 0%, #2c3e50 100%);
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .footer {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            margin-top: 30px;
+            color: #666;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <span class="logo-icon">📅</span> SGEA
+            </div>
+        </div>
+        
+        <div class="success-badge">
+            <h2 style="margin: 0; color: white;">✅ Inscrição Confirmada!</h2>
+        </div>
+        
+        <p>Olá <strong>{{ user.first_name }}</strong>,</p>
+        
+        <p>Sua inscrição foi realizada com sucesso! Confira os detalhes abaixo:</p>
+        
+        <div class="event-card">
+            <h3>{{ evento.titulo }}</h3>
+            <div class="event-detail">
+                <span class="event-detail-icon">📋</span>
+                <span><strong>Tipo:</strong> {{ evento.get_tipo_evento_display }}</span>
+            </div>
+            <div class="event-detail">
+                <span class="event-detail-icon">📅</span>
+                <span><strong>Data:</strong> {{ evento.data_inicio|date:"d/m/Y" }} a {{ evento.data_fim|date:"d/m/Y" }}</span>
+            </div>
+            <div class="event-detail">
+                <span class="event-detail-icon">⏰</span>
+                <span><strong>Horário:</strong> {{ evento.horario_inicio|time:"H:i" }} às {{ evento.horario_fim|time:"H:i" }}</span>
+            </div>
+            <div class="event-detail">
+                <span class="event-detail-icon">📍</span>
+                <span><strong>Local:</strong> {{ evento.local }}</span>
+            </div>
+        </div>
+        
+        <div class="text-center">
+            <a href="{{ site_url }}/events/{{ evento.pk }}/" class="btn">Ver Detalhes do Evento</a>
+        </div>
+        
+        <p style="margin-top: 20px;">
+            <strong>Lembre-se:</strong> Compareça ao evento para garantir seu certificado de participação!
+        </p>
+        
+        <div class="footer">
+            <p><strong>📅 SGEA</strong> - Sistema de Gestão de Eventos Acadêmicos</p>
+            <p>© 2025 - UniCEUB</p>
+        </div>
+    </div>
+</body>
+</html>
+
