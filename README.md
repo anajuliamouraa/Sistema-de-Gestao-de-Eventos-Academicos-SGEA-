@@ -277,6 +277,7 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ---
 
+<<<<<<< HEAD
 ## 📞 Contato
 
 **Email:** ana.fmoura@gmail.com  
@@ -284,6 +285,8 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ---
 
+=======
+>>>>>>> 0ffbe47cbbd93ba81a6d13ed9c07fec3b0fb04bc
 **Desenvolvido com ❤️ usando Django**
 
 **Última atualização:** Dezembro de 2025  
